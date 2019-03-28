@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ro.pub.cs.systems.eim.practicaltest01.PracticalTest01MainActivity" >
+
+    <Button
+        android:id="@+id/navigate_to_secondary_activity_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:text="navigate_to_secondary_activity" />
+
+    <EditText
+        android:id="@+id/left_edit_text"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigate_to_secondary_activity_button"
+        android:layout_alignParentLeft="true"
+        android:ems="7"
+        android:enabled="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:saveEnabled="false" />
+
+    <EditText
+        android:id="@+id/right_edit_text"
+        android:layout_width="198dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigate_to_secondary_activity_button"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_toEndOf="@+id/left_edit_text"
+        android:layout_toRightOf="@+id/left_edit_text"
+        android:ems="7"
+        android:enabled="false"
+        android:gravity="center"
+        android:inputType="number"
+        android:saveEnabled="false" />
+
+    <Button
+        android:id="@+id/left_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/left_edit_text"
+        android:layout_below="@id/left_edit_text"
+        android:layout_alignRight="@id/left_edit_text"
+        android:text="press_me" />
+
+    <Button
+        android:id="@+id/right_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/right_edit_text"
+        android:layout_alignRight="@id/right_edit_text"
+        android:layout_below="@id/right_edit_text"
+        android:text="press_me_too" />
+
+</RelativeLayout>
+
