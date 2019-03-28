@@ -1,14 +1,30 @@
 package ro.pub.cs.systems.eim.practicaltest01;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 public class PracticalTest01MainActivity extends AppCompatActivity {
+
+
+    private MessageBroadcastReceiver messageBroadcastReceiver = new MessageBroadcastReceiver();
+    private class MessageBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("[Message]", intent.getStringExtra("message"));
+        }
+    }
+
+    private IntentFilter intentFilter = new IntentFilter();
 
     private EditText leftEditText;
     private EditText rightEditText;
@@ -16,6 +32,8 @@ public class PracticalTest01MainActivity extends AppCompatActivity {
     private Button rightButton;
     Integer t1_val = 0;
     Integer t2_val = 0;
+
+    private int serviceStatus = 0;
 
     private final static int SECONDARY_ACTIVITY_REQUEST_CODE = 1;
     private Button navigateToSecondaryActivityButton = null;
@@ -50,6 +68,16 @@ public class PracticalTest01MainActivity extends AppCompatActivity {
                 t1_val++;
                 leftEditText.setText(t1_val.toString());
                 rightEditText.setText(t2_val.toString());
+
+                if (t1_val + t2_val > 3
+                        && serviceStatus == 0) {
+                    Intent intent = new Intent(getApplicationContext(), PracticalTest01Service.class);
+                    intent.putExtra("firstNumber", t1_val);
+                    intent.putExtra("secondNumber", t2_val);
+                    getApplicationContext().startService(intent);
+                    serviceStatus = 1;
+                }
+
             }
         });
 
@@ -58,10 +86,41 @@ public class PracticalTest01MainActivity extends AppCompatActivity {
                 t2_val++;
                 leftEditText.setText(t1_val.toString());
                 rightEditText.setText(t2_val.toString());
+
+                if (t1_val + t2_val > 3
+                        && serviceStatus == 0) {
+                    Intent intent = new Intent(getApplicationContext(), PracticalTest01Service.class);
+                    intent.putExtra("firstNumber", t1_val);
+                    intent.putExtra("secondNumber", t2_val);
+                    getApplicationContext().startService(intent);
+                    serviceStatus = 1;
+                }
             }
         });
 
+        for (int index = 0; index < Constants.actionTypes.length; index++) {
+            intentFilter.addAction(Constants.actionTypes[index]);
+        }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(messageBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(messageBroadcastReceiver);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent(this, PracticalTest01Service.class);
+        stopService(intent);
+        super.onDestroy();
     }
 
     @Override
